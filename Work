@@ -1,0 +1,124 @@
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
+
+public class Work {
+
+	private JFrame frame;
+	private JTextField textField;
+	private JTextField textField_1;
+
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Work window = new Work();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+    		});
+	}
+
+	
+	public Work() {
+		initialize(); //metodo
+	}
+
+	//inizializiamo la finestra
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		//vari componenti
+		textField = new JTextField();
+		textField.setBounds(80, 9, 96, 19);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Importo:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblNewLabel.setBounds(10, 10, 103, 13);
+		frame.getContentPane().add(lblNewLabel);
+		
+		textField_1 = new JTextField();
+		textField_1.setEnabled(false);
+		textField_1.setBounds(69, 55, 107, 19);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Totale:");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblNewLabel_1.setBounds(10, 56, 79, 13);
+		frame.getContentPane().add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Eventuale Sconto:");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblNewLabel_2.setBounds(289, 12, 137, 13);
+		frame.getContentPane().add(lblNewLabel_2);
+		
+		JComboBox<String> comboBox = new JComboBox<>();
+		comboBox.setModel(new DefaultComboBoxModel<>(new String[] {"", "No Sconto", "10%", "20%"}));
+		comboBox.setBounds(289, 48, 126, 21);
+		frame.getContentPane().add(comboBox);
+		
+		JButton ButtonCalcola = new JButton("Calcola");
+		ButtonCalcola.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		ButtonCalcola.setBounds(232, 154, 85, 21);
+		ButtonCalcola.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calcolaTotale(comboBox);
+			}
+		});
+		frame.getContentPane().add(ButtonCalcola);
+		
+		JButton ButtonEsci = new JButton("Esci");
+		ButtonEsci.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0); // Chiude l'applicazione
+			}
+		});
+		ButtonEsci.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		ButtonEsci.setBounds(351, 154, 85, 21);
+		frame.getContentPane().add(ButtonEsci);
+	}
+
+	private void calcolaTotale(JComboBox<String> comboBox) {
+		try {
+			double importo = Double.parseDouble(textField.getText());
+			double sconto = 0.0;
+
+			String selectedItem = (String) comboBox.getSelectedItem();
+			if (selectedItem != null) {
+				switch (selectedItem) {
+					case "10%":
+						sconto = 0.10;
+						break;
+					case "20%":
+						sconto = 0.20;
+						break;
+					default:
+						sconto = 0.0; 
+						break;
+				}
+			}
+
+			double totale = importo - (importo * sconto);
+			textField_1.setText(String.format("%.2f", totale)); // Mostra  totale con 2 decimali
+		} catch (NumberFormatException e) {
+			textField_1.setText("Inserire un importo valido");
+		}
+	}
+}
