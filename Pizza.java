@@ -48,7 +48,7 @@ public class Pizza {
 
     private void initialize() {
         frame = new JFrame();
-        frame.getContentPane().setBackground(new Color(70, 107, 128));
+        frame.getContentPane().setBackground(new Color(70, 117, 128));
         frame.setBounds(100, 100, 450, 533);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
